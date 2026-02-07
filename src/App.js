@@ -1240,13 +1240,38 @@ function MarbleObjetPage() {
 // ============================================================
 // APP
 // ============================================================
+// --- URL ROUTING HELPERS ---
+function pageToPath(page) {
+  if (page === "home") return "/";
+  if (page.startsWith("material-")) return "/material/" + page.replace("material-", "");
+  if (page.startsWith("brand-")) return "/brand/" + page.replace("brand-", "");
+  if (page.startsWith("project-")) return "/project/" + page.replace("project-", "");
+  return "/" + page;
+}
+
+function pathToPage(path) {
+  if (path === "/" || path === "") return "home";
+  const clean = path.replace(/^\//, "").replace(/\/$/, "");
+  if (clean.startsWith("material/")) return "material-" + clean.replace("material/", "");
+  if (clean.startsWith("brand/")) return "brand-" + clean.replace("brand/", "");
+  if (clean.startsWith("project/")) return "project-" + clean.replace("project/", "");
+  return clean;
+}
+
 export default function App() {
-  const [page, setPage] = useState("home");
+  const [page, setPage] = useState(() => pathToPage(window.location.pathname));
   const [quoteModal, setQuoteModal] = useState(false);
   const [quotePreselect, setQuotePreselect] = useState({});
 
+  useEffect(() => {
+    const onPop = () => setPage(pathToPage(window.location.pathname));
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
   const navigate = (p) => {
     setPage(p);
+    window.history.pushState(null, "", pageToPath(p));
     window.scrollTo(0, 0);
   };
 
