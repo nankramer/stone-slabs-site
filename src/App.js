@@ -59,8 +59,7 @@ const MATERIALS = [
   { id: 442, name: "Wulong", brand: "neolith", type: "Sintered Stone", colour: "Grey", pattern: "Speckled", finish: ["Honed"], apps: ["Cladding", "Kitchens", "Outdoor"], img: "images/neolith/Wulong.jpeg" },
   { id: 443, name: "Zaha Stone", brand: "neolith", type: "Sintered Stone", colour: "Grey", pattern: "Veined", finish: ["Polished", "Honed"], apps: ["Kitchens", "Bathrooms", "Cladding"], img: "images/neolith/Zaha_Stone.jpeg" },
   // --- Eezi Quartz ---
-  { id: 4, name: "Atlantic Grey", brand: "eezi-quartz", type: "Quartz", colour: "Grey", pattern: "Speckled", finish: ["Polished", "Honed"], apps: ["Kitchens", "Bathrooms", "Staircases"], range: "Saver", img: "images/eezi-quartz/Atlantic_Grey.jpg" },
-  { id: 10, name: "Arctic White", brand: "eezi-quartz", type: "Quartz", colour: "White", pattern: "Solid", finish: ["Polished", "Honed"], apps: ["Kitchens", "Bathrooms"], range: "Saver", img: "images/eezi-quartz/Arctic_White.jpg" },
+
   { id: 500, name: "Aurelia", brand: "eezi-quartz", type: "Quartz", colour: "White", pattern: "Veined", finish: ["Polished"], apps: ["Kitchens", "Bathrooms"], range: "Deluxe", img: "images/eezi-quartz/Aurelia.jpg" },
   { id: 501, name: "Beach", brand: "eezi-quartz", type: "Quartz", colour: "Beige", pattern: "Speckled", finish: ["Polished"], apps: ["Kitchens", "Bathrooms"], range: "Saver", img: "images/eezi-quartz/Beach.jpg" },
   { id: 502, name: "Bianco Calacatta", brand: "eezi-quartz", type: "Quartz", colour: "White", pattern: "Veined", finish: ["Polished"], apps: ["Kitchens", "Bathrooms"], range: "Deluxe", img: "images/eezi-quartz/Bianco_Calacatta.jpg" },
@@ -253,9 +252,10 @@ body { font-family: var(--font-body); color: var(--stone-800); background: var(-
 // Resolves img property: if it starts with 'linear-gradient' use as-is, otherwise treat as image URL
 const bgStyle = (img, height) => {
   const isGradient = img && img.startsWith('linear-gradient');
+  const imgUrl = isGradient ? img : (img.startsWith('/') ? img : `/${img}`);
   return {
     height: height || 200,
-    background: isGradient ? img : `url(${img}) center/cover no-repeat`,
+    background: isGradient ? img : `url(${imgUrl}) center/cover no-repeat`,
     backgroundColor: isGradient ? undefined : 'var(--stone-100)',
     position: 'relative',
   };
@@ -967,7 +967,7 @@ function MaterialDetailPage({ id, onNavigate, onQuote }) {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: 48 }}>
           {m.img.startsWith('linear-gradient')
             ? <div style={{ ...bgStyle(m.img, 400), borderRadius: 16 }} />
-            : <img src={m.img} alt={m.name} style={{ width: '100%', height: 'auto', maxHeight: 600, objectFit: 'cover', borderRadius: 16, display: 'block' }} />
+            : <img src={`/${m.img}`} alt={m.name} style={{ width: '100%', height: 'auto', maxHeight: 600, objectFit: 'cover', borderRadius: 16, display: 'block' }} />
           }
           <div>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', color: 'var(--stone-400)', marginBottom: 8, cursor: 'pointer' }} onClick={() => onNavigate(`brand-${m.brand}`)}>{brand?.name}{m.code ? ` · ${m.code}` : ''}</div>
