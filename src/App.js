@@ -730,7 +730,7 @@ function Hero({ headline, sub, cta, ctaAction, secondary, secondaryAction, dark 
             {sub}
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
-            <button onClick={ctaAction} style={{ padding: '16px 36px', background: dark ? 'white' : 'var(--stone-800)', color: dark ? 'var(--stone-900)' : 'white', border: 'none', borderRadius: 10, fontSize: 15, fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-body)', letterSpacing: '0.3px', transition: 'transform 0.2s' }}>{cta}</button>
+            {cta && <button onClick={ctaAction} style={{ padding: '16px 36px', background: dark ? 'white' : 'var(--stone-800)', color: dark ? 'var(--stone-900)' : 'white', border: 'none', borderRadius: 10, fontSize: 15, fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-body)', letterSpacing: '0.3px', transition: 'transform 0.2s' }}>{cta}</button>}
             {secondary && (
               <button onClick={secondaryAction} style={{ padding: '16px 36px', background: 'transparent', color: dark ? 'rgba(255,255,255,0.7)' : 'var(--stone-600)', border: `1px solid ${dark ? 'rgba(255,255,255,0.2)' : 'var(--stone-200)'}`, borderRadius: 10, fontSize: 15, fontWeight: 500, cursor: 'pointer', fontFamily: 'var(--font-body)', transition: 'all 0.2s' }}>{secondary}</button>
             )}
