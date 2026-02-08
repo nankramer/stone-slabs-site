@@ -12,6 +12,7 @@ const BRANDS = [
   { slug: "lutum", name: "Lutum", tagline: "Sintered stone surfaces", desc: "Lutum sintered stone surfaces are manufactured using cutting-edge technology to produce ultra-compact slabs with exceptional durability, heat resistance, and design versatility. The 10-colour range spans dramatic veined marbles, rich greens, deep blacks, warm travertines, and industrial concretes." },
   { slug: "marble", name: "Marble", tagline: "Natural marble surfaces", desc: "Natural marble is the ultimate expression of luxury in stone. Each slab is unique — formed over millions of years with distinctive veining, colour variation, and depth that no engineered surface can replicate. Our curated marble collection includes classic Italian Nero Marquinas, rich Emperadors, striking Iceberg blues, and rare greens — sourced from quarries worldwide and available in polished, honed, and leather finishes." },
   { slug: "quartzite", name: "Quartzite", tagline: "Natural quartzite surfaces", desc: "Quartzite is one of the hardest natural stones available — harder than granite and far more durable than marble. Formed from sandstone under intense heat and pressure, quartzite combines the dramatic veining and translucency of marble with exceptional scratch, heat, and UV resistance. Our collection features rare and exotic slabs from Brazil and beyond, available in polished, honed, and leather finishes." },
+  { slug: "granite", name: "Granite", tagline: "Natural granite surfaces", desc: "Granite is the world's most popular natural stone for kitchen countertops — and for good reason. Formed from cooled magma deep within the earth, granite is exceptionally hard, heat-resistant, and scratch-resistant. Each slab features unique mineral patterns and colour variations. Our granite collection spans classic blacks, warm ivories, dramatic cosmopolitans, and exotic crystals — all polished or leathered to perfection." },
 ];
 
 const MATERIALS = [
@@ -255,6 +256,28 @@ const MATERIALS = [
   { id: 709, name: "Barcelona", brand: "quartzite", type: "Quartzite", colour: "Beige", pattern: "Veined", finish: ["Polished", "Honed"], apps: ["Kitchens", "Bathrooms", "Cladding"], img: "images/quartzite/Barcelona.png" },
   { id: 710, name: "Avocatus Leather", brand: "quartzite", type: "Quartzite", colour: "Green", pattern: "Veined", finish: ["Leathered"], apps: ["Kitchens", "Cladding", "Bathrooms"], img: "images/quartzite/Avocatus_Leather.png" },
   { id: 711, name: "Antionette", brand: "quartzite", type: "Quartzite", colour: "Beige", pattern: "Veined", finish: ["Polished", "Honed"], apps: ["Kitchens", "Bathrooms", "Cladding"], img: "images/quartzite/Antionette.png" },
+  // --- Granite (Natural Stone) ---
+  { id: 800, name: "Zimbabwe", brand: "granite", type: "Granite", colour: "Black", pattern: "Solid", finish: ["Polished", "Honed"], apps: ["Kitchens", "Bathrooms", "Staircases", "Cladding"], img: "images/granite/Zimbabwe.png" },
+  { id: 801, name: "Viscon White", brand: "granite", type: "Granite", colour: "White", pattern: "Veined", finish: ["Polished"], apps: ["Kitchens", "Bathrooms"], img: "images/granite/Viscon_White.png" },
+  { id: 802, name: "Vintage Crystal", brand: "granite", type: "Granite", colour: "Beige", pattern: "Speckled", finish: ["Polished"], apps: ["Kitchens", "Bathrooms"], img: "images/granite/Vintage_Crystal.png" },
+  { id: 803, name: "Verde Ubatuba", brand: "granite", type: "Granite", colour: "Green", pattern: "Speckled", finish: ["Polished"], apps: ["Kitchens", "Bathrooms"], img: "images/granite/Verde_Ubatuba.png" },
+  { id: 804, name: "Titanium Leather", brand: "granite", type: "Granite", colour: "Black", pattern: "Veined", finish: ["Leathered"], apps: ["Kitchens", "Bathrooms", "Cladding"], img: "images/granite/Titanium_Leather.png" },
+  { id: 805, name: "Titanium Gold Leather", brand: "granite", type: "Granite", colour: "Black", pattern: "Veined", finish: ["Leathered"], apps: ["Kitchens", "Bathrooms", "Cladding"], img: "images/granite/Titanium_Gold_Leather.jpg" },
+  { id: 806, name: "Star Galaxy", brand: "granite", type: "Granite", colour: "Black", pattern: "Speckled", finish: ["Polished"], apps: ["Kitchens", "Bathrooms", "Staircases"], img: "images/granite/Star_Galaxy.png" },
+  { id: 807, name: "Silver Paradiso Leather", brand: "granite", type: "Granite", colour: "Grey", pattern: "Veined", finish: ["Leathered"], apps: ["Kitchens", "Bathrooms", "Cladding"], img: "images/granite/Silver_Paradiso_Leather.png" },
+  { id: 808, name: "Silver Paradiso", brand: "granite", type: "Granite", colour: "Grey", pattern: "Veined", finish: ["Polished"], apps: ["Kitchens", "Bathrooms", "Cladding"], img: "images/granite/Silver_Paradiso.png" },
+  { id: 809, name: "Mystic Grey Satin", brand: "granite", type: "Granite", colour: "Grey", pattern: "Textured", finish: ["Honed"], apps: ["Kitchens", "Bathrooms", "Cladding"], img: "images/granite/Mystic_Grey_Satin.png" },
+  { id: 810, name: "Lava Oro Antique", brand: "granite", type: "Granite", colour: "Grey", pattern: "Veined", finish: ["Leathered"], apps: ["Kitchens", "Cladding"], img: "images/granite/Lava_Oro_Antique.png" },
+  { id: 811, name: "Ivory White", brand: "granite", type: "Granite", colour: "White", pattern: "Speckled", finish: ["Polished"], apps: ["Kitchens", "Bathrooms"], img: "images/granite/Ivory_White.png" },
+  { id: 812, name: "Ivory Pearl", brand: "granite", type: "Granite", colour: "Beige", pattern: "Speckled", finish: ["Polished"], apps: ["Kitchens", "Bathrooms"], img: "images/granite/Ivory_Pearl.png" },
+  { id: 813, name: "Ivory Fantasy", brand: "granite", type: "Granite", colour: "Beige", pattern: "Speckled", finish: ["Polished"], apps: ["Kitchens", "Bathrooms"], img: "images/granite/Ivory_Fantasy.png" },
+  { id: 814, name: "Giallo Ornamentalle", brand: "granite", type: "Granite", colour: "Beige", pattern: "Speckled", finish: ["Polished"], apps: ["Kitchens", "Bathrooms"], img: "images/granite/Giallo_Ornamentalle.png" },
+  { id: 815, name: "Cosmopolitan", brand: "granite", type: "Granite", colour: "Brown", pattern: "Veined", finish: ["Polished"], apps: ["Kitchens", "Bathrooms", "Cladding"], img: "images/granite/Cosmopolitan.png" },
+  { id: 816, name: "Colonial White", brand: "granite", type: "Granite", colour: "White", pattern: "Speckled", finish: ["Polished"], apps: ["Kitchens", "Bathrooms"], img: "images/granite/Colonial_White.png" },
+  { id: 817, name: "Blue Pearl", brand: "granite", type: "Granite", colour: "Blue", pattern: "Speckled", finish: ["Polished"], apps: ["Kitchens", "Bathrooms", "Cladding"], img: "images/granite/Blue_Pearl.png" },
+  { id: 818, name: "Black Vermont", brand: "granite", type: "Granite", colour: "Black", pattern: "Solid", finish: ["Polished", "Honed"], apps: ["Kitchens", "Bathrooms", "Cladding"], img: "images/granite/Black_Vermont.png" },
+  { id: 819, name: "Autumn Brown", brand: "granite", type: "Granite", colour: "Brown", pattern: "Speckled", finish: ["Polished"], apps: ["Kitchens", "Bathrooms"], img: "images/granite/Autumn_Brown.png" },
+  { id: 820, name: "Andromeda White", brand: "granite", type: "Granite", colour: "White", pattern: "Veined", finish: ["Polished"], apps: ["Kitchens", "Bathrooms"], img: "images/granite/Andromeda_White.png" },
 ];
 
 const PROJECTS = [
