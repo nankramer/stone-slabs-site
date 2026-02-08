@@ -523,7 +523,27 @@ function QuoteForm({ preselect = {}, embedded = false, onClose }) {
     return Object.keys(e).length === 0;
   };
 
-  const submit = () => { if (validate()) setSubmitted(true); };
+  const [submitError, setSubmitError] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  const submit = async () => {
+    if (!validate()) return;
+    setSubmitting(true);
+    setSubmitError(false);
+    try {
+      const formData = new FormData();
+      Object.entries(form).forEach(([k, v]) => formData.append(k, v));
+      files.forEach(f => formData.append('attachment', f));
+      const res = await fetch('https://formspree.io/f/mqedkrow', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: formData,
+      });
+      if (res.ok) { setSubmitted(true); }
+      else { setSubmitError(true); }
+    } catch { setSubmitError(true); }
+    setSubmitting(false);
+  };
 
   const handleFiles = (e) => {
     const newFiles = Array.from(e.target.files);
@@ -621,8 +641,9 @@ function QuoteForm({ preselect = {}, embedded = false, onClose }) {
           <option>Google</option><option>Instagram</option><option>Referral</option><option>Architect / Designer</option><option>Returning Client</option><option>Other</option>
         </select>
       </div>
-      <button onClick={submit} style={{ marginTop: 24, width: '100%', padding: '16px', background: 'var(--stone-800)', color: 'white', border: 'none', borderRadius: 10, fontSize: 15, fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-body)', letterSpacing: '0.3px', transition: 'background 0.2s' }}>
-        Get My Quote →
+      {submitError && <div style={{ marginTop: 12, color: '#c44', fontSize: 13, textAlign: 'center' }}>Something went wrong. Please try again or call us directly.</div>}
+      <button onClick={submit} disabled={submitting} style={{ marginTop: 24, width: '100%', padding: '16px', background: submitting ? 'var(--stone-400)' : 'var(--stone-800)', color: 'white', border: 'none', borderRadius: 10, fontSize: 15, fontWeight: 600, cursor: submitting ? 'wait' : 'pointer', fontFamily: 'var(--font-body)', letterSpacing: '0.3px', transition: 'background 0.2s' }}>
+        {submitting ? 'Sending...' : 'Get My Quote →'}
       </button>
     </div>
   );
