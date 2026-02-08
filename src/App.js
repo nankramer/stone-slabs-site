@@ -540,8 +540,15 @@ function QuoteForm({ preselect = {}, embedded = false, onClose }) {
         body: formData,
       });
       if (res.ok) { setSubmitted(true); }
-      else { setSubmitError(true); }
-    } catch { setSubmitError(true); }
+      else {
+        const err = await res.json().catch(() => ({}));
+        console.error('Formspree error:', res.status, err);
+        setSubmitError(err.error || 'Something went wrong. Please try again or call us directly.');
+      }
+    } catch (e) {
+      console.error('Submit error:', e);
+      setSubmitError('Something went wrong. Please try again or call us directly.');
+    }
     setSubmitting(false);
   };
 
@@ -641,7 +648,7 @@ function QuoteForm({ preselect = {}, embedded = false, onClose }) {
           <option>Google</option><option>Instagram</option><option>Referral</option><option>Architect / Designer</option><option>Returning Client</option><option>Other</option>
         </select>
       </div>
-      {submitError && <div style={{ marginTop: 12, color: '#c44', fontSize: 13, textAlign: 'center' }}>Something went wrong. Please try again or call us directly.</div>}
+      {submitError && <div style={{ marginTop: 12, color: '#c44', fontSize: 13, textAlign: 'center' }}>{typeof submitError === 'string' ? submitError : 'Something went wrong. Please try again or call us directly.'}</div>}
       <button onClick={submit} disabled={submitting} style={{ marginTop: 24, width: '100%', padding: '16px', background: submitting ? 'var(--stone-400)' : 'var(--stone-800)', color: 'white', border: 'none', borderRadius: 10, fontSize: 15, fontWeight: 600, cursor: submitting ? 'wait' : 'pointer', fontFamily: 'var(--font-body)', letterSpacing: '0.3px', transition: 'background 0.2s' }}>
         {submitting ? 'Sending...' : 'Get My Quote →'}
       </button>
