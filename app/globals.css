@@ -1,0 +1,148 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Stone palette */
+  --stone-50: #FAF8F5;
+  --stone-100: #F2EDE6;
+  --stone-200: #E5DDD2;
+  --stone-300: #D4C9B8;
+  --stone-400: #B8A88E;
+  --stone-500: #8B7355;
+  --stone-600: #6B5740;
+  --stone-700: #4A3D2E;
+  --stone-800: #2D261C;
+  --stone-900: #1A1610;
+
+  --background: var(--stone-50);
+  --foreground: var(--stone-800);
+  --card: #ffffff;
+  --card-foreground: var(--stone-800);
+  --popover: #ffffff;
+  --popover-foreground: var(--stone-800);
+  --primary: var(--stone-800);
+  --primary-foreground: #ffffff;
+  --secondary: var(--stone-100);
+  --secondary-foreground: var(--stone-600);
+  --muted: var(--stone-100);
+  --muted-foreground: var(--stone-500);
+  --accent: var(--stone-100);
+  --accent-foreground: var(--stone-800);
+  --destructive: #c44;
+  --destructive-foreground: #ffffff;
+  --border: var(--stone-200);
+  --input: var(--stone-200);
+  --ring: var(--stone-400);
+  --radius: 0.625rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius: var(--radius);
+
+  /* Stone tokens */
+  --color-stone-50: var(--stone-50);
+  --color-stone-100: var(--stone-100);
+  --color-stone-200: var(--stone-200);
+  --color-stone-300: var(--stone-300);
+  --color-stone-400: var(--stone-400);
+  --color-stone-500: var(--stone-500);
+  --color-stone-600: var(--stone-600);
+  --color-stone-700: var(--stone-700);
+  --color-stone-800: var(--stone-800);
+  --color-stone-900: var(--stone-900);
+
+  --font-sans: var(--font-instrument-sans);
+  --font-serif: var(--font-playfair-display);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--stone-100);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--stone-400);
+  border-radius: 3px;
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  animation: fadeUp 0.6s ease both;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease both;
+}
+
+/* Noise texture overlay */
+.noise::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+}
