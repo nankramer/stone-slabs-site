@@ -304,6 +304,24 @@ const SERVICES = [
 ];
 
 // ============================================================
+// PHONE REVEAL COMPONENT
+// ============================================================
+const PHONE_REAL = "031 577 9797";
+const PHONE_MASKED = "031 XXX XXXX";
+const PHONE_TEL = "tel:0315779797";
+
+function PhoneReveal({ style, className, prefix }) {
+  const [revealed, setRevealed] = useState(false);
+  return (
+    <a href={revealed ? PHONE_TEL : "#"} onClick={e => { if (!revealed) { e.preventDefault(); setRevealed(true); }}}
+      onMouseEnter={() => setRevealed(true)} onMouseLeave={() => setRevealed(false)}
+      style={{ textDecoration: 'none', color: 'inherit', cursor: 'pointer', ...style }} className={className}>
+      {prefix}{revealed ? PHONE_REAL : PHONE_MASKED}
+    </a>
+  );
+}
+
+// ============================================================
 // STYLES
 // ============================================================
 const FONT = `'Instrument Sans', 'DM Sans', -apple-system, sans-serif`;
@@ -452,7 +470,7 @@ function Nav({ current, onNavigate, onQuote }) {
             ))}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span className="nav-phone">031 XXX XXXX</span>
+            <PhoneReveal className="nav-phone" />
             <button className="nav-cta" onClick={onQuote}>Get Quote</button>
           </div>
           <button className={`hamburger ${open ? 'open' : ''}`} onClick={() => setOpen(!open)}>
@@ -487,6 +505,11 @@ function QuoteForm({ preselect = {}, embedded = false, onClose }) {
   const [errors, setErrors] = useState({});
   const fileRef = useRef();
 
+  useEffect(() => {
+    if (preselect.material) setForm(f => ({ ...f, material: preselect.material }));
+    if (preselect.type) setForm(f => ({ ...f, type: preselect.type }));
+  }, [preselect.material, preselect.type]);
+
   const update = (k, v) => { setForm(f => ({ ...f, [k]: v })); setErrors(e => ({ ...e, [k]: null })); };
 
   const validate = () => {
@@ -494,7 +517,7 @@ function QuoteForm({ preselect = {}, embedded = false, onClose }) {
     if (!form.name.trim()) e.name = "Required";
     if (!form.phone.trim()) e.phone = "Required";
     if (!form.email.trim() || !/\S+@\S+\.\S+/.test(form.email)) e.email = "Valid email required";
-    if (!form.type) e.type = "Select a project type";
+    // type is optional
     if (!form.area.trim()) e.area = "Required";
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -513,7 +536,7 @@ function QuoteForm({ preselect = {}, embedded = false, onClose }) {
         <div style={{ fontSize: 48, marginBottom: 16 }}>✓</div>
         <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 24, marginBottom: 12, color: 'var(--stone-800)' }}>We've received your request</h3>
         <p style={{ color: 'var(--stone-500)', lineHeight: 1.7, maxWidth: 400, margin: '0 auto' }}>
-          Thanks, {form.name.split(' ')[0]}. We'll review your project details and get back to you within 24 hours. For anything urgent, call us on 031 XXX XXXX.
+          Thanks, {form.name.split(' ')[0]}. We'll review your project details and get back to you within 24 hours. For anything urgent, call us on <PhoneReveal style={{ fontWeight: 600 }} />.
         </p>
         {onClose && <button onClick={onClose} style={{ marginTop: 24, padding: '10px 24px', background: 'var(--stone-800)', color: 'white', border: 'none', borderRadius: 8, cursor: 'pointer', fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 600 }}>Close</button>}
       </div>
@@ -834,7 +857,7 @@ function HomePage({ onNavigate, onQuote }) {
       <Section>
         <SectionTitle label="Materials" title="Featured Surfaces" sub="A selection from our range of natural and engineered stone." />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 16 }}>
-          {MATERIALS.slice(0, 8).map(m => <MaterialCard key={m.id} m={m} onNavigate={onNavigate} shortlist={[]} toggleShortlist={() => {}} />)}
+          {_.sampleSize(MATERIALS.filter(m => m.img && !m.img.startsWith('linear')), 8).map(m => <MaterialCard key={m.id} m={m} onNavigate={onNavigate} shortlist={[]} toggleShortlist={() => {}} />)}
         </div>
         <div style={{ textAlign: 'center', marginTop: 40 }}>
           <button onClick={() => onNavigate('materials')} style={{ padding: '14px 36px', background: 'transparent', border: '1px solid var(--stone-300)', borderRadius: 10, fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-body)', color: 'var(--stone-600)', transition: 'all 0.2s' }}>Browse All Materials →</button>
@@ -872,7 +895,7 @@ function HomePage({ onNavigate, onQuote }) {
           <div>
             <SectionTitle label="Get Started" title="Tell Us About Your Project" sub="Share your project details and we'll provide a detailed quote within 24 hours. Upload drawings or photos for the most accurate pricing." />
             <div style={{ fontSize: 14, color: 'var(--stone-500)', lineHeight: 1.7, marginTop: 20 }}>
-              Not sure where to start? Call us on <strong style={{ color: 'var(--stone-700)' }}>031 XXX XXXX</strong> or visit our showroom in Springfield Park, Durban.
+              Not sure where to start? Call us on <PhoneReveal style={{ color: 'var(--stone-700)', fontWeight: 700 }} /> or visit our showroom in Springfield Park, Durban.
             </div>
           </div>
           <div style={{ background: 'white', borderRadius: 16, padding: 32, boxShadow: '0 4px 24px rgba(0,0,0,0.04)' }}>
@@ -998,9 +1021,8 @@ function MaterialsPage({ onNavigate, onQuote }) {
 
   return (
     <>
-      <div style={{ paddingTop: 72 }} />
+      <Hero headline="Materials" sub="Browse our full range of natural and engineered stone surfaces." bg="linear-gradient(135deg, #1a1610 0%, #2d261c 40%, #1a1610 100%)" />
       <Section bg="white" padY={48}>
-        <SectionTitle title="Materials" sub="Browse our full range of sintered stone and quartz surfaces." />
         
         {/* Filters */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 32, padding: 24, background: 'var(--stone-50)', borderRadius: 14, border: '1px solid var(--stone-100)' }}>
@@ -1093,7 +1115,7 @@ function MaterialDetailPage({ id, onNavigate, onQuote }) {
             </div>
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 32 }}>
               <button onClick={() => onQuote({ material: m.name })} style={{ padding: '14px 28px', background: 'var(--stone-800)', color: 'white', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-body)' }}>Quote with This Material</button>
-              <button onClick={() => onNavigate('contact')} style={{ padding: '14px 28px', background: 'transparent', border: '1px solid var(--stone-300)', borderRadius: 10, fontSize: 14, fontWeight: 500, cursor: 'pointer', fontFamily: 'var(--font-body)', color: 'var(--stone-600)' }}>Book a Slab Viewing</button>
+              <button onClick={() => onNavigate('contact', { material: m.name })} style={{ padding: '14px 28px', background: 'transparent', border: '1px solid var(--stone-300)', borderRadius: 10, fontSize: 14, fontWeight: 500, cursor: 'pointer', fontFamily: 'var(--font-body)', color: 'var(--stone-600)' }}>Book a Slab Viewing</button>
             </div>
           </div>
         </div>
@@ -1274,7 +1296,7 @@ function DesignersPage({ onNavigate, onQuote }) {
 }
 
 // --- CONTACT ---
-function ContactPage({ onQuote }) {
+function ContactPage({ onQuote, preselect = {} }) {
   return (
     <>
       <div style={{ paddingTop: 72 }} />
@@ -1285,7 +1307,7 @@ function ContactPage({ onQuote }) {
             <div style={{ marginBottom: 32 }}>
               {[
                 ["📍", "Address", "Springfield Park, Durban, KwaZulu-Natal"],
-                ["📞", "Phone", "031 XXX XXXX"],
+                ["📞", "Phone", null],
                 ["✉", "Email", "info@stoneslabs.co.za"],
                 ["🕐", "Hours", "Mon–Fri 7:30–16:30 | Sat 8:00–12:00"],
               ].map(([icon, label, value]) => (
@@ -1293,24 +1315,24 @@ function ContactPage({ onQuote }) {
                   <div style={{ fontSize: 20, width: 32 }}>{icon}</div>
                   <div>
                     <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', color: 'var(--stone-400)', marginBottom: 4 }}>{label}</div>
-                    <div style={{ fontSize: 15, color: 'var(--stone-700)' }}>{value}</div>
+                    <div style={{ fontSize: 15, color: 'var(--stone-700)' }}>{label === "Phone" ? <PhoneReveal /> : value}</div>
                   </div>
                 </div>
               ))}
             </div>
-            <div style={{ height: 240, borderRadius: 12, background: 'var(--stone-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--stone-400)', fontSize: 14 }}>
-              Google Map embed area
+            <div style={{ height: 240, borderRadius: 12, overflow: 'hidden' }}>
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3516.250659370246!2d30.982119175606048!3d-29.802080675046508!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1ef7012b1958b03f%3A0x73d92cd405ed7838!2sStone%20Slabs!5e1!3m2!1sen!2sza!4v1770568162003!5m2!1sen!2sza" width="100%" height="100%" style={{ border: 0 }} allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Stone Slabs Location"></iframe>
             </div>
           </div>
           <div style={{ background: 'var(--stone-50)', borderRadius: 16, padding: 32 }}>
-            <QuoteForm embedded />
+            <QuoteForm embedded preselect={preselect} />
           </div>
         </div>
       </Section>
 
       <Section>
         <div id="book-visit" style={{ maxWidth: 600, margin: '0 auto', textAlign: 'center' }}>
-          <SectionTitle title="Book a Slab Viewing" sub="See and touch the materials before you decide. Book a viewing at our showroom or request samples delivered to your site." />
+          <SectionTitle title="Book a Slab Viewing" sub={preselect.material ? `Viewing requested for: ${preselect.material}` : "See and touch the materials before you decide. Book a viewing at our showroom or request samples delivered to your site."} />
           <button onClick={onQuote} style={{ padding: '14px 32px', background: 'var(--stone-800)', color: 'white', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-body)' }}>Book a Visit</button>
         </div>
       </Section>
@@ -1397,6 +1419,7 @@ export default function App() {
   const [page, setPage] = useState(() => pathToPage(window.location.pathname));
   const [quoteModal, setQuoteModal] = useState(false);
   const [quotePreselect, setQuotePreselect] = useState({});
+  const [contactPreselect, setContactPreselect] = useState({});
 
   useEffect(() => {
     const onPop = () => setPage(pathToPage(window.location.pathname));
@@ -1404,7 +1427,8 @@ export default function App() {
     return () => window.removeEventListener("popstate", onPop);
   }, []);
 
-  const navigate = (p) => {
+  const navigate = (p, data) => {
+    if (data) setContactPreselect(data);
     setPage(p);
     window.history.pushState(null, "", pageToPath(p));
     window.scrollTo(0, 0);
@@ -1425,7 +1449,7 @@ export default function App() {
     if (page === "projects") return <ProjectsPage onNavigate={navigate} />;
     if (page.startsWith("project-")) return <ProjectDetailPage id={page.replace("project-", "")} onNavigate={navigate} onQuote={() => openQuote()} />;
     if (page === "designers") return <DesignersPage onNavigate={navigate} onQuote={() => openQuote()} />;
-    if (page === "contact") return <ContactPage onQuote={() => openQuote()} />;
+    if (page === "contact") return <ContactPage onQuote={() => openQuote()} preselect={contactPreselect} />;
     if (page === "marble-objet") return <MarbleObjetPage />;
     return <HomePage onNavigate={navigate} onQuote={() => openQuote()} />;
   };
@@ -1442,7 +1466,7 @@ export default function App() {
       <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, padding: '12px 16px', background: 'rgba(26,22,16,0.95)', backdropFilter: 'blur(8px)', zIndex: 90, display: 'none' }}>
         <style>{`@media (max-width: 1024px) { .mobile-float { display: flex !important; } }`}</style>
         <div className="mobile-float" style={{ display: 'none', gap: 12, alignItems: 'center', justifyContent: 'space-between' }}>
-          <a href="tel:031XXXXXXX" style={{ color: 'white', fontSize: 13, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}>📞 Call Us</a>
+          <PhoneReveal style={{ color: 'white', fontSize: 13, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }} prefix="📞 " />
           <button onClick={() => openQuote()} style={{ flex: 1, maxWidth: 200, padding: '12px', background: 'white', color: 'var(--stone-900)', border: 'none', borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-body)' }}>Get Quote</button>
         </div>
       </div>
